@@ -1,3 +1,4 @@
+from abc import ABC, abstractmethod
 class Product:
     def __init__(self, name):
         self._name = name
@@ -16,7 +17,9 @@ class ConcreteProduct2(Product):
         super().__init__("ConcreteProduct2")
 
 
-class Creator:
+class Creator(ABC):
+
+    @abstractmethod
     def factory_method(self):
         raise NotImplementedError
 
