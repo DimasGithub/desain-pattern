@@ -1,23 +1,20 @@
 from abc import ABC, abstractmethod
 
 
-class Car:
+class Car():
     def __init__(self):
         self.seat = None
         self.engine = None
         self.computer = None
         self.gps = None
 
-class Manual:
+class Manual():
     def __init__(self):
         self.content = []
-    
     def add_content(self, content):
         self.content.append(content)
-
-
-class Manual():
-    pass
+    def result(self):
+        self.content
 
 class Builder(ABC):
 
@@ -72,37 +69,51 @@ class CarManualBuilder(Builder):
         self._manual = Manual()
     
     def setSeats(self, seats:int)->None:
-        self.manual.add_content(f"Seats: {seats}")
+        self._manual.add_content(f"Seats: {seats}")
     
     def setEngine(self,engine:str)->None:
-        self.manual.add_content(f"Engine: {engine}")
+        self._manual.add_content(f"Engine: {engine}")
     
     def setTripComputer(self, computer:str)->None:
-        self.manual.add_content(f"Trip Computer: {computer}")
+        self._manual.add_content(f"Trip Computer: {computer}")
     
-    def setGps(self, gps:bool)->None:
-        self.manual.add_content(f"Gps: {gps}")
+    def setGPS(self, gps:bool)->None:
+        self._manual.add_content(f"Gps: {gps}")
     
-    def getResult(self, gps:bool)->None:
-        result = self.manual
-        return result
+    def getResult(self)->None:
+        print(self._manual.result)
 
 class Director():
-    def makeFerarri(self, builder):
+    def makeFerarri(self, builder:Builder):
         builder.reset()
         builder.setSeats(2)
         builder.setEngine("Ferarri manchine")
-        builder.setGps(True)
+        builder.setGPS(True)
         builder.setTripComputer("Debian os")
 
-    def makeSuv(self, builder):
+    def makeSuv(self, builder:Builder):
         builder.reset()
         builder.setSeats(4)
         builder.setEngine("Mercedez benz ")
-        builder.setGps(True)
+        builder.setGPS(True)
         builder.setTripComputer("Mercedez os")
 
 class Application:
+
+    def __init__(self)->None:
+        self.make_car()
+
     def make_car(self):
         director = Director()
-        car_builder = CarBUilder()
+    
+        car_builder = CarBuilder()
+        director.makeFerarri(car_builder)
+        car =  car_builder.getResult()
+    
+        car_manual_builder = CarManualBuilder()
+        director.makeFerarri(car_manual_builder)
+        car_manual = car_manual_builder.getResult()
+        return car, car_manual
+
+if __name__ == '__main__':
+    client = Application()
